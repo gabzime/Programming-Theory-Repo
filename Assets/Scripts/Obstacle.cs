@@ -5,16 +5,18 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     private protected PlayerController player;
+    private protected GameManager gameManager;
     public MeshRenderer Renderer;
     private Material material;
     public bool isTarget;
     public bool showAsProbablyTarget;
-    public Color probablyColor;
-    public Color notProbablyColor;
+    [SerializeField] Color probablyColor;
+    [SerializeField] Color notProbablyColor;
     // Start is called before the first frame update
     public virtual void Start()
     {
         player = GameObject.Find("Player").GetComponent<PlayerController>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         Debug.Log("Start obstacle Class");
         material = Renderer.material;
         showAsProbablyTarget = true;
@@ -46,6 +48,10 @@ public class Obstacle : MonoBehaviour
 
     public virtual void Suicide()
     {
+        if (isTarget)
+        {
+            gameManager.GameWin();
+        }
         Destroy(this.gameObject);
     }
     
