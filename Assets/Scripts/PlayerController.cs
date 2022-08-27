@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
-    private float m_Speed = 10f;
     private Vector3 direction;
     public float sensibility;
     private GameManager gameManager;
+
+    // ENCAPSULATION
+    private float m_Speed = 10f;
     public float Speed
     {
         get { return m_Speed; }
@@ -56,6 +58,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // ABSTRACTION
     bool IsInStage()
     {
         return this.transform.position.y > 0;

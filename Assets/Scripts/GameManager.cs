@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
         gameOver = true;
     }
 
+    // ABSTRACTION
     private Vector3 spawnPosition()
     {
         Vector3 position = new Vector3(Random.Range(-9f, 9f), 3f, Random.Range(-9f, 9f));
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
         return position;
     }
 
+    // ABSTRACTION
     private GameObject spawnObstacle()
     {
         int obstacleIndex = Random.Range(0, obstacles.Count);

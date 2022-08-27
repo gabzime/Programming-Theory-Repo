@@ -21,21 +21,6 @@ public class Obstacle : MonoBehaviour
         showAsProbablyTarget = true;
         setColor();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-        /*
-        int rand = Random.Range(0, 10);
-        if (rand == 0)
-        {
-            Color color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.5f, 1.0f));
-            colorChange(color);
-        }
-        */
-
-    }
     
     public virtual void OnCollisionEnter(Collision collision)
     {
