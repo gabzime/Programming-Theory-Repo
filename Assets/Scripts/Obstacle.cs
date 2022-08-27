@@ -17,7 +17,6 @@ public class Obstacle : MonoBehaviour
     {
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        Debug.Log("Start obstacle Class");
         material = Renderer.material;
         showAsProbablyTarget = true;
         setColor();
@@ -53,6 +52,13 @@ public class Obstacle : MonoBehaviour
             gameManager.GameWin();
         }
         Destroy(this.gameObject);
+        gameManager.DepureProbablyObstacles();
+    }
+
+    public void retireProbability()
+    {
+        showAsProbablyTarget = false;
+        setColor();
     }
     
     public void setColor()

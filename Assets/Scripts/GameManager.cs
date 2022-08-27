@@ -6,8 +6,9 @@ public class GameManager : MonoBehaviour
 {
     public bool gameOver = false;
     public int obstaclesCount;
-    public List<GameObject> obstacles;
-    private List<GameObject> probablyTargets;
+    public List<GameObject> obstacles = new List<GameObject>();
+    public List<GameObject> probablyTargets;
+    public int countGiveInfo;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +17,22 @@ public class GameManager : MonoBehaviour
 
     public void GiveInfo()
     {
-        Debug.Log("GiveInfo");
+        for (var index = 0; index < countGiveInfo; index++)
+        {
+            GameObject obstacle = probablyTargets[probablyTargets.Count - 1];
+            probablyTargets.RemoveAt(probablyTargets.Count - 1);
+            obstacle.GetComponent<Obstacle>().retireProbability();
+        }
+    }
+
+    public void DepureProbablyObstacles()
+    {
+        for (var index = probablyTargets.Count - 1; index > -1; index--)
+        {
+            if (probablyTargets[index] == null)
+                probablyTargets.RemoveAt(index);
+        }
+        // otra forma:  probablyTargets = probablyTargets.Where(function(item) { return item != null }).ToList();
     }
 
     public void GameLose()
@@ -39,7 +55,7 @@ public class GameManager : MonoBehaviour
     private Vector3 spawnPosition()
     {
         Vector3 position = new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f));
-        while (position.x*position.x+position.y*position.y*position.y>100f)
+        while (position.x*position.x+position.z*position.z>81f)
         {
             position = new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f));
         }
@@ -53,10 +69,22 @@ public class GameManager : MonoBehaviour
    }
     private void spawnObstacles()
     {
-        for (int index = 0; index < 30; index++)
+        bool targetAssigned = false;
+        for (int index = 0; index < obstaclesCount; index++)
         {
-            spawnObstacle();
-        }
+            GameObject obstacle = spawnObstacle();
+            if (obstacle.name!="Skull(Clone)")   
+            {
+                if (!targetAssigned)
+                {
+                    obstacle.GetComponent<Obstacle>().isTarget = true;
+                    targetAssigned = true;
+                } else
+                {
+                    probablyTargets.Add(obstacle);
+                }
 
+            }
+        }
     }
 }

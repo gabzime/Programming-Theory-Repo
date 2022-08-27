@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private float m_Speed = 10f;
     private Vector3 direction;
     public float sensibility;
+    private GameManager gameManager;
     public float Speed
     {
         get { return m_Speed; }
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         direction = Vector3.forward;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -41,8 +43,25 @@ public class PlayerController : MonoBehaviour
         {
             direction = Vector3.back;
         }
-        playerRb.AddForce(direction * Speed, ForceMode.Force);
+        if (!gameManager.gameOver)
+        {
+            playerRb.AddForce(direction * Speed, ForceMode.Force);
+        } else
+        {
+            if (!IsInStage())
+            {
+                gameManager.GameLose();
+            }
+        }
+
     }
+
+    bool IsInStage()
+    {
+        return this.transform.position.y > 0;
+    }
+
+
 
     public void speedChange(float speedChange)
     {

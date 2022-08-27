@@ -8,8 +8,8 @@ public class Info : Obstacle
     {
         if (collision.gameObject.name == "Player")
         {
-            gameManager.GiveInfo();
             base.Suicide();
+            gameManager.GiveInfo();
         }
     }
 }
