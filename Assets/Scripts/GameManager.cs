@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> obstacles = new List<GameObject>();
     public List<GameObject> probablyTargets;
     public int countGiveInfo;
+    public TextMeshProUGUI endMessage;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +21,12 @@ public class GameManager : MonoBehaviour
     {
         for (var index = 0; index < countGiveInfo; index++)
         {
-            GameObject obstacle = probablyTargets[probablyTargets.Count - 1];
-            probablyTargets.RemoveAt(probablyTargets.Count - 1);
-            obstacle.GetComponent<Obstacle>().retireProbability();
+            if (probablyTargets.Count>0)
+            {
+                GameObject obstacle = probablyTargets[probablyTargets.Count - 1];
+                probablyTargets.RemoveAt(probablyTargets.Count - 1);
+                obstacle.GetComponent<Obstacle>().retireProbability();
+            }
         }
     }
 
@@ -37,27 +42,35 @@ public class GameManager : MonoBehaviour
 
     public void GameLose()
     {
+        // Only once endMessage can be assigned.
+        if (!gameOver)
+        {
+            endMessage.text = "You lose";
+        }
         GameOver();
-        Debug.Log("You lose.");
     }
 
     public void GameWin()
     {
+        if (!gameOver)
+        {
+            endMessage.text = "You win!";
+        }
         GameOver();
-        Debug.Log("You win.");
     }
 
     void GameOver()
     {
+        endMessage.gameObject.SetActive(true);
         gameOver = true;
     }
 
     private Vector3 spawnPosition()
     {
-        Vector3 position = new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f));
-        while (position.x*position.x+position.z*position.z>81f)
+        Vector3 position = new Vector3(Random.Range(-9f, 9f), 3f, Random.Range(-9f, 9f));
+        while (position.x*position.x+position.z*position.z>64f)
         {
-            position = new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f));
+            position = new Vector3(Random.Range(-9f, 9f), 3f, Random.Range(-9f, 9f));
         }
         return position;
     }
@@ -66,7 +79,12 @@ public class GameManager : MonoBehaviour
     {
         int obstacleIndex = Random.Range(0, obstacles.Count);
         return Instantiate(obstacles[obstacleIndex], spawnPosition(), obstacles[obstacleIndex].transform.rotation);
-   }
+    }
+
+    private void spawnSkull()
+    {
+        Instantiate(obstacles[0], spawnPosition(), obstacles[0].transform.rotation);
+    }
     private void spawnObstacles()
     {
         bool targetAssigned = false;
@@ -86,5 +104,7 @@ public class GameManager : MonoBehaviour
 
             }
         }
+        // At least spawn one Skull:
+        spawnSkull();
     }
 }

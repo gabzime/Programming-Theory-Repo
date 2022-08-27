@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
-        direction = Vector3.forward;
+        direction = Vector3.back;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
